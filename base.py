@@ -1,5 +1,10 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
+import matplotlib
+matplotlib.use('Qt5Agg')
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT
+from matplotlib.figure import Figure
 
 class Slider:
     def __init__(self, label="p:", vals=['a','b','c']):
@@ -33,6 +38,11 @@ class Slider:
 class UI(QtWidgets.QMainWindow):
     def __init__(self, p): # parameters
         super().__init__()
+        self.setWindowTitle("Plot Viewer")
+        self.centralwidget = QtWidgets.QWidget(self)
+        self.setCentralWidget(self.centralwidget)
+        self.setGeometry(100,50,1200,650)
+        #=================================================================
 
         self.comboBox = QtWidgets.QComboBox()
         self.comboBox.addItems(p.keys())
@@ -52,20 +62,21 @@ class UI(QtWidgets.QMainWindow):
         para_layout.addStretch()
         para_grpBox = QtWidgets.QGroupBox("Parameters")
         para_grpBox.setLayout(para_layout)
-        para_grpBox.setMaximumWidth(200)
+        para_grpBox.setFixedWidth(200)
         #==============================================================
-
-        self.longrange = QtWidgets.QCheckBox("Plot here...")
-        nbrHd_vLayout = QtWidgets.QVBoxLayout()
-        nbrHd_vLayout.addWidget(self.longrange)
-        nbrHd_vLayout.addStretch()
+        self.fig = Figure()
+        self.canvas = FigureCanvasQTAgg(self.fig)
+        self.axes = self.fig.add_subplot(111)
+        self.toolbar = NavigationToolbar2QT(self.canvas, self.centralwidget)
+        self.fig.tight_layout()
+        #create new layout
+        plot_layout = QtWidgets.QVBoxLayout()
+        plot_layout.addWidget(self.canvas)
+        plot_layout.addWidget(self.toolbar)
         NbrHd_grpBox = QtWidgets.QGroupBox("Plot")
-        NbrHd_grpBox.setLayout(nbrHd_vLayout)
+        NbrHd_grpBox.setLayout(plot_layout)
         #=================================================================
 
-        self.setWindowTitle("Plot Viewer")
-        self.centralwidget = QtWidgets.QWidget(self)
-        self.setCentralWidget(self.centralwidget)
         horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
         horizontalLayout.addWidget(para_grpBox)
         horizontalLayout.addWidget(NbrHd_grpBox)
