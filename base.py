@@ -6,7 +6,7 @@ class Slider:
         slider = QtWidgets.QSlider(Qt.Horizontal)
         slider.setSingleStep(1)
         slider.setRange(0, len(vals)-1)
-        slider.setFocusPolicy(Qt.NoFocus)
+        # slider.setFocusPolicy(Qt.NoFocus)
         slider.valueChanged.connect(self.updateLabel)
 
         self.vals=vals
@@ -20,7 +20,6 @@ class Slider:
         hbox.addWidget(self.slider)
         hbox.addWidget(self.current_value)
         self.hbox = hbox
-        print('sldkfj')
 
     def updateLabel(self, i):
         self.current_value.setText(self.vals[i])
@@ -33,25 +32,28 @@ class Slider:
 
 
 class UI(QtWidgets.QMainWindow):
-    def __init__(self):
+    def __init__(self, p): # parameters
         super().__init__()
 
         self.comboBox = QtWidgets.QComboBox()
-        self.comboBox.addItems(['wire','p'])
+        self.comboBox.addItems(p.keys())
         self.comboBox.activated.connect(self.getComboValue)
 
-        self.prob = Slider('p', ['a', 'ab', 'asa'])
+        para_layout = QtWidgets.QVBoxLayout()
+        para_layout.addStretch()
+        para_layout.addWidget(self.comboBox)
 
-        initPopPara_Layout = QtWidgets.QVBoxLayout()
-        initPopPara_Layout.addStretch()
-        initPopPara_Layout.addWidget(self.comboBox)
-        initPopPara_Layout.addLayout(self.prob.hbox)
-        initPopPara_Layout.addStretch()
-        InitPop_grpBox = QtWidgets.QGroupBox("Parameters")
-        InitPop_grpBox.setLayout(initPopPara_Layout)
+        self.sld_wd = {}
+        for k, v in p.items():
+            self.sld_wd[k] = Slider(k, v)
+            para_layout.addLayout(self.sld_wd[k].hbox)
+
+        para_layout.addStretch()
+        para_grpBox = QtWidgets.QGroupBox("Parameters")
+        para_grpBox.setLayout(para_layout)
         #==============================================================
 
-        self.longrange = QtWidgets.QCheckBox("Long Range Interactions")
+        self.longrange = QtWidgets.QCheckBox("Plot here...")
         nbrHd_vLayout = QtWidgets.QVBoxLayout()
         nbrHd_vLayout.addWidget(self.longrange)
         nbrHd_vLayout.addStretch()
@@ -63,7 +65,7 @@ class UI(QtWidgets.QMainWindow):
         self.centralwidget = QtWidgets.QWidget(self)
         self.setCentralWidget(self.centralwidget)
         horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
-        horizontalLayout.addWidget(InitPop_grpBox)
+        horizontalLayout.addWidget(para_grpBox)
         horizontalLayout.addWidget(NbrHd_grpBox)
         self.statusbar = QtWidgets.QStatusBar(self)
         self.setStatusBar(self.statusbar)
@@ -74,8 +76,15 @@ class UI(QtWidgets.QMainWindow):
 
 
 if __name__ == '__main__':
+    p = {'wire': ['static', 'dynamic'],
+         'c'   : ['1'],
+         'k'   : ['2', '4'],
+         'n'   : ['100'],
+         'b'   : ['0', '-0.04', '-0.08', '-0.1'],
+         'p'   : ['0', '0.1', '0.3', '0.5', '0.7'] }
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    form = UI()
+    form = UI(p)
     form.show()
-    sys.exit(app.exec_())
+    app.exec_()
+    print('done')
