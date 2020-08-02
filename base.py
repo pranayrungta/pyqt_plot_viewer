@@ -1,27 +1,6 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
 
-def DoubleSpinBox(minimum=0, maximum=1.0, singleStep=0.1):
-    box = QtWidgets.QDoubleSpinBox()
-    box.setMinimum(minimum)
-    box.setMaximum(maximum)
-    box.setSingleStep(singleStep)
-    return box
-
-def SpinBox(maximum, singleStep, init_value=0):
-    box = QtWidgets.QSpinBox()
-    box.setMaximum(maximum)
-    box.setSingleStep(singleStep)
-    box.setProperty("value", init_value)
-    return box
-
-def FormLay(label_Field_list):
-    formLayout = QtWidgets.QFormLayout()
-    for i,(label,field) in enumerate(label_Field_list):
-        formLayout.setWidget(i, QtWidgets.QFormLayout.LabelRole, label)
-        formLayout.setWidget(i, QtWidgets.QFormLayout.FieldRole, field)
-    return formLayout
-
 class Slider:
     def __init__(self, label="p:", vals=['a','b','c']):
         slider = QtWidgets.QSlider(Qt.Horizontal)
@@ -56,49 +35,31 @@ class Slider:
 class UI(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
-        i0_label = QtWidgets.QLabel("Io:")
-        r0_label = QtWidgets.QLabel("Ro:")
-        size_label = QtWidgets.QLabel("Size:")
-        self.s = Slider('p', ['a', 'ab', 'asa'])
-        self.i0 = DoubleSpinBox()
-        self.r0 = DoubleSpinBox()
-        self.popsize = SpinBox(200, 10)
-        self.generatebutton = QtWidgets.QPushButton("Generate")
-        self.plot_but = QtWidgets.QPushButton("Plot")
+
+        self.comboBox = QtWidgets.QComboBox()
+        self.comboBox.addItems(['wire','p'])
+        self.comboBox.activated.connect(self.getComboValue)
+
+        self.prob = Slider('p', ['a', 'ab', 'asa'])
 
         initPopPara_Layout = QtWidgets.QVBoxLayout()
-        initPopPara_Layout.addLayout(self.s.hbox)
-        initPopPara_Layout.addLayout(FormLay([[i0_label,   self.i0],
-                                              [r0_label,   self.r0],
-                                              [size_label, self.popsize]]))
         initPopPara_Layout.addStretch()
-        initPopPara_Layout.addWidget(self.generatebutton)
-        initPopPara_Layout.addWidget(self.plot_but)
-        InitPop_grpBox = QtWidgets.QGroupBox("Initial Population")
+        initPopPara_Layout.addWidget(self.comboBox)
+        initPopPara_Layout.addLayout(self.prob.hbox)
+        initPopPara_Layout.addStretch()
+        InitPop_grpBox = QtWidgets.QGroupBox("Parameters")
         InitPop_grpBox.setLayout(initPopPara_Layout)
         #==============================================================
 
-        self.nbr4 = QtWidgets.QRadioButton("von Neumann(4)")
-        self.nbr4.setChecked(True)
-        self.nbr8 = QtWidgets.QRadioButton("Moore(8)")
         self.longrange = QtWidgets.QCheckBox("Long Range Interactions")
-        self.prob_label = QtWidgets.QLabel("Probability:")
-        self.probrewire = QtWidgets.QLineEdit()
-        self.freq_label = QtWidgets.QLabel("Frequency:")
-        self.freqrewire = QtWidgets.QLineEdit()
-
         nbrHd_vLayout = QtWidgets.QVBoxLayout()
-        nbrHd_vLayout.addWidget(self.nbr4)
-        nbrHd_vLayout.addWidget(self.nbr8)
         nbrHd_vLayout.addWidget(self.longrange)
         nbrHd_vLayout.addStretch()
-        nbrHd_vLayout.addLayout(FormLay([[self.prob_label,self.probrewire],
-                                         [self.freq_label,self.freqrewire]]))
-        NbrHd_grpBox = QtWidgets.QGroupBox("Neighbourhood  ")
+        NbrHd_grpBox = QtWidgets.QGroupBox("Plot")
         NbrHd_grpBox.setLayout(nbrHd_vLayout)
         #=================================================================
 
-        self.setWindowTitle("S I R Model")
+        self.setWindowTitle("Plot Viewer")
         self.centralwidget = QtWidgets.QWidget(self)
         self.setCentralWidget(self.centralwidget)
         horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
@@ -107,6 +68,9 @@ class UI(QtWidgets.QMainWindow):
         self.statusbar = QtWidgets.QStatusBar(self)
         self.setStatusBar(self.statusbar)
         self.statusbar.showMessage('Working...')
+
+    def getComboValue(self):
+        print((self.comboBox.currentText(), self.comboBox.currentIndex()))
 
 
 if __name__ == '__main__':
