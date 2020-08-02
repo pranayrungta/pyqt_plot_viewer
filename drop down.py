@@ -22,3 +22,4 @@ class ComboBoxDemo(QWidget):
 app = QApplication(sys.argv)
 demo = ComboBoxDemo()
 demo.show()
+sys.exit(app.exec_())

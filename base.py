@@ -6,7 +6,6 @@ class Slider:
         slider = QtWidgets.QSlider(Qt.Horizontal)
         slider.setSingleStep(1)
         slider.setRange(0, len(vals)-1)
-        # slider.setFocusPolicy(Qt.NoFocus)
         slider.valueChanged.connect(self.updateLabel)
 
         self.vals=vals
@@ -42,15 +41,18 @@ class UI(QtWidgets.QMainWindow):
         para_layout = QtWidgets.QVBoxLayout()
         para_layout.addStretch()
         para_layout.addWidget(self.comboBox)
+        para_layout.addSpacing(15)
 
         self.sld_wd = {}
         for k, v in p.items():
             self.sld_wd[k] = Slider(k, v)
             para_layout.addLayout(self.sld_wd[k].hbox)
+            para_layout.addSpacing(15)
 
         para_layout.addStretch()
         para_grpBox = QtWidgets.QGroupBox("Parameters")
         para_grpBox.setLayout(para_layout)
+        para_grpBox.setMaximumWidth(200)
         #==============================================================
 
         self.longrange = QtWidgets.QCheckBox("Plot here...")
