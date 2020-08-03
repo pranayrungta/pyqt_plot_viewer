@@ -4,30 +4,33 @@ from PyQt5.QtCore import Qt
 class Slider(QtWidgets.QWidget):
     def __init__(self, label="p:", vals=['a','b','c'], *args, **kwargs):
         super(Slider, self).__init__(*args, **kwargs)
-        slider = QtWidgets.QSlider(Qt.Horizontal)
-        slider.setSingleStep(1)
-        slider.setRange(0, len(vals)-1)
-        slider.valueChanged.connect(self.updateLabel)
 
         self.vals=vals
         self.label = QtWidgets.QLabel(label)
+        slider = QtWidgets.QSlider(Qt.Horizontal)
+        slider.setSingleStep(1)
+        slider.setRange(0, len(vals)-1)
+        slider.valueChanged.connect(lambda i:
+                self.current_value.setText(self.vals[i]))
         self.slider = slider
         self.current_value = QtWidgets.QLabel(vals[0])
-
 
         hbox = QtWidgets.QHBoxLayout()
         hbox.addWidget(self.label)
         hbox.addWidget(self.slider)
         hbox.addWidget(self.current_value)
-        self.hbox = hbox
-        self.setLayout(self.hbox)
+        self.setLayout(hbox)
 
-    def updateLabel(self, i):
-        self.current_value.setText(self.vals[i])
-        print( self.vals[ self.slider.value() ] )
+    def hide(self):
+        self.label.hide()
+        self.slider.hide()
+        self.current_value.hide()
+    def show(self):
+        self.label.show()
+        self.slider.show()
+        self.current_value.show()
 
     def value(self):
-        print(self.slider.value())
         return self.vals[ self.slider.value() ]
 
 
@@ -35,22 +38,59 @@ class Slider(QtWidgets.QWidget):
 class Controls(QtWidgets.QWidget):
     def __init__(self, p, *args, **kwargs):#parameters
         super(Controls, self).__init__(*args, **kwargs)
-        self.comboBox = QtWidgets.QComboBox()
-        self.comboBox.addItems(p.keys())
-        self.comboBox.activated.connect(self.getComboValue)
 
-        para_layout = QtWidgets.QVBoxLayout()
-        para_layout.addWidget(self.comboBox)
-        para_layout.addSpacing(15)
+        const = ["Constants:"]
+        self.constants = {}
+        self.vary = QtWidgets.QComboBox()
         self.sld_wd = {}
         for k, v in p.items():
-            self.sld_wd[k] = Slider(k, v)
-            para_layout.addWidget(self.sld_wd[k])
+            if len(v)>1:
+                self.sld_wd[k] = Slider(k, v)
+            elif len(v)==1:
+                const.append( f'{k} = {v[0]}' )
+                self.constants[k] = v[0]
+        self.vary.addItems(self.sld_wd.keys())
+        const = '\n'.join(const)
+        const = QtWidgets.QLabel(const)
+
+        self.variable = self.vary.currentText()
+        self.on_change_callback = lambda:None
+
+        para_layout = QtWidgets.QVBoxLayout()
+        para_layout.addWidget(const)
+        para_layout.addSpacing(15)
+        para_layout.addWidget(self.vary)
+        para_layout.addSpacing(15)
+        for sld in self.sld_wd.values():
+            para_layout.addWidget(sld)
             para_layout.addSpacing(15)
         self.setLayout(para_layout)
 
-    def getComboValue(self):
-        print((self.comboBox.currentText(), self.comboBox.currentIndex()))
+        self.vary.activated.connect(self.change_vary)
+        for sld in self.sld_wd.values():
+            sld.slider.valueChanged.connect(self.call_on_change)
+        self.change_vary()
+
+    def change_vary(self):
+        var = self.vary.currentText()
+        self.sld_wd[self.variable].show()
+        self.sld_wd[var].hide()
+        self.variable = var
+        self.call_on_change()
+
+    def get_values(self):
+        const = self.constants.copy()
+        const.update({k:self.sld_wd[k].value()
+                      for k in self.sld_wd})
+        var = self.vary.currentText()
+        const.pop(var)
+        variable = (var, self.sld_wd[var].vals)
+        return variable, const
+
+    def call_on_change(self):
+        print(self.get_values())
+        self.on_change_callback()
+
 
 
 if __name__ == '__main__':
