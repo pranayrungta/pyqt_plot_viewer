@@ -33,7 +33,7 @@ class Slider:
         print(self.slider.value())
         return self.vals[ self.slider.value() ]
 
-
+from controls import Controls
 
 class UI(QtWidgets.QMainWindow):
     def __init__(self, p): # parameters
@@ -43,23 +43,12 @@ class UI(QtWidgets.QMainWindow):
         self.setCentralWidget(self.centralwidget)
         self.setGeometry(100,50,1200,650)
         #=================================================================
-        self.comboBox = QtWidgets.QComboBox()
-        self.comboBox.addItems(p.keys())
-        self.comboBox.activated.connect(self.getComboValue)
-
+        self.controls = Controls(p)
+        para_grpBox = QtWidgets.QGroupBox("Parameters")
         para_layout = QtWidgets.QVBoxLayout()
         para_layout.addStretch()
-        para_layout.addWidget(self.comboBox)
-        para_layout.addSpacing(15)
-
-        self.sld_wd = {}
-        for k, v in p.items():
-            self.sld_wd[k] = Slider(k, v)
-            para_layout.addLayout(self.sld_wd[k].hbox)
-            para_layout.addSpacing(15)
-
+        para_layout.addWidget(self.controls)
         para_layout.addStretch()
-        para_grpBox = QtWidgets.QGroupBox("Parameters")
         para_grpBox.setLayout(para_layout)
         para_grpBox.setFixedWidth(200)
         #==============================================================
