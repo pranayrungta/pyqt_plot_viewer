@@ -34,32 +34,45 @@ class Slider(QtWidgets.QWidget):
         return self.vals[ self.slider.value() ]
 
 
+def seperate_const(p):
+    var, const = {}, {}
+    for k,v in p.items():
+        if len(v)==1:
+            const[k] = v[0]
+        elif len(v)>1: var[k]=v
+    return const, var
+
+def const_label(const={'c': '1', 'n': '100'}):
+    const_label = ["Constants:"]
+    const_label.extend( f'{k} = {v}'
+                        for k,v in const.items())
+    const_label = '\n\t'.join(const_label)
+    return const_label
 
 class Controls(QtWidgets.QWidget):
     def __init__(self, p, *args, **kwargs):#parameters
         super(Controls, self).__init__(*args, **kwargs)
 
-        const = ["Constants:"]
-        self.constants = {}
+        self.constants, var = seperate_const(p)
         self.vary = QtWidgets.QComboBox()
+        self.vary.addItems(var.keys())
         self.sld_wd = {}
-        for k, v in p.items():
-            if len(v)>1:
-                self.sld_wd[k] = Slider(k, v)
-            elif len(v)==1:
-                const.append( f'{k} = {v[0]}' )
-                self.constants[k] = v[0]
-        self.vary.addItems(self.sld_wd.keys())
-        const = '\n'.join(const)
-        const = QtWidgets.QLabel(const)
+        for k, v in var.items():
+            self.sld_wd[k] = Slider(k, v)
 
         self.variable = self.vary.currentText()
         self.on_change_callback = lambda:None
 
         para_layout = QtWidgets.QVBoxLayout()
+        const = QtWidgets.QLabel( const_label(self.constants) )
         para_layout.addWidget(const)
         para_layout.addSpacing(15)
-        para_layout.addWidget(self.vary)
+
+        vary_lbl = QtWidgets.QLabel( 'vary:' )
+        vary_layout = QtWidgets.QHBoxLayout()
+        vary_layout.addWidget(vary_lbl)
+        vary_layout.addWidget(self.vary, stretch=True)
+        para_layout.addLayout(vary_layout)
         para_layout.addSpacing(15)
         for sld in self.sld_wd.values():
             para_layout.addWidget(sld)
@@ -80,8 +93,8 @@ class Controls(QtWidgets.QWidget):
 
     def get_values(self):
         const = self.constants.copy()
-        const.update({k:self.sld_wd[k].value()
-                      for k in self.sld_wd})
+        const.update( { k:slider.value() for k, slider in
+                        self.sld_wd.items() }  )
         var = self.vary.currentText()
         const.pop(var)
         variable = (var, self.sld_wd[var].vals)
@@ -92,12 +105,11 @@ class Controls(QtWidgets.QWidget):
         self.on_change_callback()
 
 
-
 if __name__ == '__main__':
     p = {'wire': ['static', 'dynamic'],
          'c'   : ['1'],
          'k'   : ['2', '4'],
-         'n'   : ['100'],
+         'n'   : ['700'],
          'b'   : ['0', '-0.04', '-0.08', '-0.1'],
          'p'   : ['0', '0.1', '0.3', '0.5', '0.7'] }
     import sys
