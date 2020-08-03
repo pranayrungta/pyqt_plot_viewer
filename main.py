@@ -5,34 +5,6 @@ from PyQt5.QtCore import Qt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT
 from matplotlib.figure import Figure
-
-class Slider:
-    def __init__(self, label="p:", vals=['a','b','c']):
-        slider = QtWidgets.QSlider(Qt.Horizontal)
-        slider.setSingleStep(1)
-        slider.setRange(0, len(vals)-1)
-        slider.valueChanged.connect(self.updateLabel)
-
-        self.vals=vals
-        self.label = QtWidgets.QLabel(label)
-        self.slider = slider
-        self.current_value = QtWidgets.QLabel(vals[0])
-
-
-        hbox = QtWidgets.QHBoxLayout()
-        hbox.addWidget(self.label)
-        hbox.addWidget(self.slider)
-        hbox.addWidget(self.current_value)
-        self.hbox = hbox
-
-    def updateLabel(self, i):
-        self.current_value.setText(self.vals[i])
-        print( self.vals[ self.slider.value() ] )
-
-    def value(self):
-        print(self.slider.value())
-        return self.vals[ self.slider.value() ]
-
 from controls import Controls
 
 class UI(QtWidgets.QMainWindow):
