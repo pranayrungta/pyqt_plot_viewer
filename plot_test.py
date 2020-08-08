@@ -35,5 +35,22 @@ def test_get_data():
     dfs = get_data(p, vary, const_vals)
     return dfs
 
+def plot_param():
+    p = dict(
+        set_grid = False,  # True   False
+        log = 'None', #'None' 'x' 'y' 'xy'
+
+        xlabel = ( r'$N_1$', dict(fontsize=25) ),
+        ylabel = ( '<x>',  dict(fontsize=25) ), #{'fontsize':20}
+
+        xlim= dict(),#dict(xmin=-0.1, xmax=1)
+        ylim= dict(),#dict(ymin=-0.1, ymax=1)
+
+        # using = lambda df: (df.iloc[:,0], df.iloc[:,1], 'o-'),
+        plot_title = 'auto', # 'auto' 'None' 'TITLE'
+        legend_loc = 'best', # 'None' 'best', 'right'
+    )
+    return p
+
 if __name__=='__main__':
     pass

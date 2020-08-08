@@ -1,23 +1,22 @@
-#!/usr/bin/python
-
-from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import (QWidget, QLabel, QSlider, QComboBox,
+                             QHBoxLayout, QVBoxLayout, QApplication)
 from PyQt5.QtCore import Qt
 
-class Slider(QtWidgets.QWidget):
+class Slider(QWidget):
     def __init__(self, label="p:", vals=['a','b','c'], *args, **kwargs):
         super(Slider, self).__init__(*args, **kwargs)
 
         self.vals=vals
-        self.label = QtWidgets.QLabel(label)
-        slider = QtWidgets.QSlider(Qt.Horizontal)
+        self.label = QLabel(label)
+        slider = QSlider(Qt.Horizontal)
         slider.setSingleStep(1)
         slider.setRange(0, len(vals)-1)
         slider.valueChanged.connect(lambda i:
                 self.current_value.setText(self.vals[i]))
         self.slider = slider
-        self.current_value = QtWidgets.QLabel(vals[0])
+        self.current_value = QLabel(vals[0])
 
-        hbox = QtWidgets.QHBoxLayout()
+        hbox = QHBoxLayout()
         hbox.addWidget(self.label)
         hbox.addWidget(self.slider)
         hbox.addWidget(self.current_value)
@@ -51,27 +50,33 @@ def const_label(const={'c': '1', 'n': '100'}):
     const_label = '\n\t'.join(const_label)
     return const_label
 
-class Controls(QtWidgets.QWidget):
+class Controls(QWidget):
     def __init__(self, p, *args, **kwargs):#parameters
         super(Controls, self).__init__(*args, **kwargs)
 
         self.constants, var = seperate_const(p)
-        self.vary = QtWidgets.QComboBox()
+        self.const_label = QLabel( const_label(self.constants) )
+        self.vary = QComboBox()
         self.vary.addItems(var.keys())
         self.sld_wd = {}
-        for k, v in var.items():
-            self.sld_wd[k] = Slider(k, v)
+        for k, vals in var.items():
+            self.sld_wd[k] = Slider(k, vals)
 
         self.variable = self.vary.currentText()
         self.on_change_callback = lambda:None
+        self.vary.activated.connect(self.change_vary)
+        for sld in self.sld_wd.values():
+            sld.slider.valueChanged.connect(self.call_on_change)
+        self.change_vary()
 
-        para_layout = QtWidgets.QVBoxLayout()
-        const = QtWidgets.QLabel( const_label(self.constants) )
-        para_layout.addWidget(const)
+        self.setup_layout()
+
+    def setup_layout(self):
+        para_layout = QVBoxLayout()
+        para_layout.addWidget(self.const_label)
         para_layout.addSpacing(15)
-
-        vary_lbl = QtWidgets.QLabel( 'vary:' )
-        vary_layout = QtWidgets.QHBoxLayout()
+        vary_lbl = QLabel( 'vary:' )
+        vary_layout = QHBoxLayout()
         vary_layout.addWidget(vary_lbl)
         vary_layout.addWidget(self.vary, stretch=True)
         para_layout.addLayout(vary_layout)
@@ -81,10 +86,6 @@ class Controls(QtWidgets.QWidget):
             para_layout.addSpacing(15)
         self.setLayout(para_layout)
 
-        self.vary.activated.connect(self.change_vary)
-        for sld in self.sld_wd.values():
-            sld.slider.valueChanged.connect(self.call_on_change)
-        self.change_vary()
 
     def change_vary(self):
         var = self.vary.currentText()
@@ -115,7 +116,7 @@ if __name__ == '__main__':
          'b'   : ['0', '-0.04', '-0.08', '-0.1'],
          'p'   : ['0', '0.1', '0.3', '0.5', '0.7'] }
     import sys
-    app = QtWidgets.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     # form = UI(p)
     # form.show()
     s = Controls(p)

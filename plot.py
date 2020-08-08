@@ -44,32 +44,17 @@ class Plotter(QtWidgets.QWidget):
         self.fig.tight_layout()
 
 
-def plot_param():
-    p = dict(
-        set_grid = False,  # True   False
-        log = 'None', #'None' 'x' 'y' 'xy'
-
-        xlabel = ( r'$N_1$', dict(fontsize=25) ),
-        ylabel = ( '<x>',  dict(fontsize=25) ), #{'fontsize':20}
-
-        xlim= dict(),#dict(xmin=-0.1, xmax=1)
-        ylim= dict(),#dict(ymin=-0.1, ymax=1)
-
-        # using = lambda df: (df.iloc[:,0], df.iloc[:,1], 'o-'),
-        plot_title = 'auto', # 'auto' 'None' 'TITLE'
-        legend_loc = 'best', # 'None' 'best', 'right'
-    )
-    return p
 
 if __name__ == '__main__':
-    from plot_test import test_get_data
+    from plot_test import test_get_data, plot_param
     dfs = test_get_data()
     p = plot_param()
+
     import sys
     app = QtWidgets.QApplication(sys.argv)
     form = Plotter()
     form.set_data(dfs)
-    form.set_plot_param(**p)
+    # form.set_plot_param(**p)
     form.show()
     app.exec_()
     print('done')
