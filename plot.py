@@ -1,7 +1,6 @@
 import matplotlib
 matplotlib.use('Qt5Agg')
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import Qt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT
 from matplotlib.figure import Figure
@@ -18,14 +17,16 @@ class Plotter(QtWidgets.QWidget):
         plot_layout.addWidget(self.toolbar)
         self.setLayout(plot_layout)
 
-    def set_data(self, dfs):
+    def set_data(self, dfs, plot_param):
         self.ax.clear()
         for label, df in dfs.items():
             c = df.columns
             x,y = df[c[0]], df[c[1]]
             self.ax.plot( x, y, 'o-', label=label)
+        self.set_plot_param(plot_param)
+        self.canvas.draw()
 
-    def set_plot_param(self, **p):
+    def set_plot_param(self, p):
         self.ax.grid(p['set_grid'])
 
         if('x' in p['log']):self.ax.set_xscale('log')
@@ -37,7 +38,7 @@ class Plotter(QtWidgets.QWidget):
 
         if(p['plot_title']=='auto'):
             self.ax.set_title('title in development')
-        elif(plot_title!='None'):
+        elif(p['plot_title']!='None'):
             self.ax.set_title(p['plot_title'])
         if(p['legend_loc']!='None'):
             self.ax.legend( loc=p['legend_loc'] )

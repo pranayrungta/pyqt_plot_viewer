@@ -104,7 +104,7 @@ class Controls(QWidget):
         return variable, const
 
     def call_on_change(self):
-        print(self.get_values())
+        # print(self.get_values())
         self.on_change_callback()
 
 
