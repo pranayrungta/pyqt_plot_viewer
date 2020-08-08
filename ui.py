@@ -1,5 +1,4 @@
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import Qt
 from controls import Controls
 from plot import Plotter
 
@@ -32,13 +31,14 @@ class UI(QtWidgets.QMainWindow):
         #=================================================================
         self.controls.on_change_callback=self.plot_interactive
         self.plot_param = plot_param
+        self.plot_interactive()
 
     def plot_interactive(self):
         # print('running...')
         from model import get_data
         variable, const = self.controls.get_values()
-        dfs = get_data(variable, const)
-        self.plotter.set_data(dfs, self.plot_param)
+        dfs, title = get_data(variable, const)
+        self.plotter.set_data(dfs, self.plot_param, title)
 
 
 if __name__ == '__main__':

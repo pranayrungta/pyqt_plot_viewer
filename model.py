@@ -20,10 +20,10 @@ def get_data(variable, const_vals):
     for val in vals:
         const[key]=val
         dfs[f'{key}={val}']=get_nvsx(const, verbose=False)
-    return dfs
+    title = '  '.join(f'{k}={v}' for k,v in const_vals.items())
+    return dfs, title
 
 def test_get_data():
     variable = ('wire', ['static', 'dynamic'])
     const_vals = {'c': '1', 'n': '100', 'k': '2', 'b': '0', 'p': '0'}
-    dfs = get_data(variable, const_vals)
-    return dfs
+    dfs, title = get_data(variable, const_vals)

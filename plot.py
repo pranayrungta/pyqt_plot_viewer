@@ -17,16 +17,16 @@ class Plotter(QtWidgets.QWidget):
         plot_layout.addWidget(self.toolbar)
         self.setLayout(plot_layout)
 
-    def set_data(self, dfs, plot_param):
+    def set_data(self, dfs, plot_param, title):
         self.ax.clear()
         for label, df in dfs.items():
             c = df.columns
             x,y = df[c[0]], df[c[1]]
             self.ax.plot( x, y, 'o-', label=label)
-        self.set_plot_param(plot_param)
+        self.set_plot_param(plot_param, title)
         self.canvas.draw()
 
-    def set_plot_param(self, p):
+    def set_plot_param(self, p, title):
         self.ax.grid(p['set_grid'])
 
         if('x' in p['log']):self.ax.set_xscale('log')
@@ -37,7 +37,7 @@ class Plotter(QtWidgets.QWidget):
         self.ax.set_ylim(**p['ylim'])
 
         if(p['plot_title']=='auto'):
-            self.ax.set_title('title in development')
+            self.ax.set_title(title)
         elif(p['plot_title']!='None'):
             self.ax.set_title(p['plot_title'])
         if(p['legend_loc']!='None'):

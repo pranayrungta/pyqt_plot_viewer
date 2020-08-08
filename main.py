@@ -9,15 +9,15 @@ plot_param = dict(
     set_grid = False,  # True   False
     log = 'None', #'None' 'x' 'y' 'xy'
 
-    xlabel = ( r'$N_1$', dict(fontsize=25) ),
-    ylabel = ( '<x>',  dict(fontsize=25) ), #{'fontsize':20}
+    xlabel = ( r'$N_1$', dict(fontsize=18) ),
+    ylabel = ( '<x>',  dict(fontsize=18) ), #{'fontsize':20}
 
     xlim= dict(),#dict(xmin=-0.1, xmax=1)
     ylim= dict(),#dict(ymin=-0.1, ymax=1)
 
     # using = lambda df: (df.iloc[:,0], df.iloc[:,1], 'o-'),
     plot_title = 'auto', # 'auto' 'None' 'TITLE'
-    legend_loc = 'best', # 'None' 'best', 'right'
+    legend_loc = 'right', # 'None' 'best', 'right'
 )
 
 
@@ -28,12 +28,5 @@ if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     from ui import UI
     ui = UI(p, plot_param)
-
-
     ui.show()
     app.exec_()
-    print('done')
-
-
-
-
