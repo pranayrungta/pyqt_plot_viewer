@@ -2,18 +2,12 @@ from PyQt5 import QtWidgets
 from controls import Controls
 from plot import Plotter
 
-class UI(QtWidgets.QMainWindow):
+class UI(QtWidgets.QDialog):
     def __init__(self, p, plot_param): # parameters
-        super().__init__()
-        self.setWindowTitle("Plot Viewer")
-        self.centralwidget = QtWidgets.QWidget(self)
-        self.setCentralWidget(self.centralwidget)
-        self.setGeometry(100,50,1200,650)
-        #=================================================================
+        super(UI, self).__init__()
         self.controls = Controls(p)
         self.plotter = Plotter()
-        self.plotter.fig.tight_layout()
-        #==============================================================
+
         para_layout = QtWidgets.QVBoxLayout()
         para_layout.addStretch()
         para_layout.addWidget(self.controls)
@@ -21,20 +15,19 @@ class UI(QtWidgets.QMainWindow):
         param = QtWidgets.QWidget()
         param.setLayout(para_layout)
         param.setFixedWidth(200)
-        #=================================================================
-        horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
+
+        horizontalLayout = QtWidgets.QHBoxLayout()
         horizontalLayout.addWidget(param)
         horizontalLayout.addWidget(self.plotter)
-        self.statusbar = QtWidgets.QStatusBar(self)
-        self.setStatusBar(self.statusbar)
-        self.statusbar.showMessage('Working...')
-        #=================================================================
+        self.setWindowTitle("Plot Viewer")
+        self.setGeometry(100,50,1200,650)
+        self.setLayout(horizontalLayout)
+
         self.controls.on_change_callback=self.plot_interactive
         self.plot_param = plot_param
         self.plot_interactive()
 
     def plot_interactive(self):
-        # print('running...')
         from model import get_data
         variable, const = self.controls.get_values()
         dfs, title = get_data(variable, const)
