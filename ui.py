@@ -8,7 +8,7 @@ class UI(QtWidgets.QDialog):
         self.controls = Controls(p)
         self.plotter = Plotter(plot_param)
         self.set_style()
-        self.controls.on_change_callback=self.plot_interactive
+        self.controls.newValueSelected.connect(self.plot_interactive)
         self.plot_interactive()
 
     def set_style(self):

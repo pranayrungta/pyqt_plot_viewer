@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import (QWidget, QLabel, QSlider, QComboBox,
                              QHBoxLayout, QVBoxLayout, QApplication)
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 
 class Slider(QWidget):
     def __init__(self, label="p:", vals=['a','b','c'], *args, **kwargs):
@@ -26,6 +26,7 @@ class Slider(QWidget):
         self.label.hide()
         self.slider.hide()
         self.current_value.hide()
+
     def show(self):
         self.label.show()
         self.slider.show()
@@ -51,6 +52,8 @@ def const_label(const={'c': '1', 'n': '100'}):
     return const_label
 
 class Controls(QWidget):
+    newValueSelected = pyqtSignal()
+
     def __init__(self, p, *args, **kwargs):#parameters
         super(Controls, self).__init__(*args, **kwargs)
 
@@ -63,12 +66,11 @@ class Controls(QWidget):
             self.sld_wd[k] = Slider(k, vals)
 
         self.variable = self.vary.currentText()
-        self.on_change_callback = lambda:None
+        # self.on_change_callback = lambda:None
         self.vary.activated.connect(self.change_vary)
         for sld in self.sld_wd.values():
-            sld.slider.valueChanged.connect(self.call_on_change)
+            sld.slider.valueChanged.connect(self.newValueSelected.emit)
         self.change_vary()
-
         self.setup_layout()
 
     def setup_layout(self):
@@ -86,13 +88,12 @@ class Controls(QWidget):
             para_layout.addSpacing(15)
         self.setLayout(para_layout)
 
-
     def change_vary(self):
         var = self.vary.currentText()
         self.sld_wd[self.variable].show()
         self.sld_wd[var].hide()
         self.variable = var
-        self.call_on_change()
+        self.newValueSelected.emit()
 
     def get_values(self):
         const = self.constants.copy()
@@ -102,10 +103,6 @@ class Controls(QWidget):
         const.pop(var)
         variable = (var, self.sld_wd[var].vals)
         return variable, const
-
-    def call_on_change(self):
-        # print(self.get_values())
-        self.on_change_callback()
 
 
 if __name__ == '__main__':
@@ -117,8 +114,6 @@ if __name__ == '__main__':
          'p'   : ['0', '0.1', '0.3', '0.5', '0.7'] }
     import sys
     app = QApplication(sys.argv)
-    # form = UI(p)
-    # form.show()
     s = Controls(p)
     s.show()
     app.exec_()
