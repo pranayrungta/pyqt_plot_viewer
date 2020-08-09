@@ -106,15 +106,15 @@ class Controls(QWidget):
 
 
 if __name__ == '__main__':
-    p = {'wire': ['static', 'dynamic'],
-         'c'   : ['1'],
-         'k'   : ['2', '4'],
+    p = {'c'   : ['1'],
          'n'   : ['700'],
+         'wire': ['static', 'dynamic'],
+         'k'   : ['2', '4'],
          'b'   : ['0', '-0.04', '-0.08', '-0.1'],
          'p'   : ['0', '0.1', '0.3', '0.5', '0.7'] }
-    import sys
-    app = QApplication(sys.argv)
+    app = QApplication([])
     s = Controls(p)
+    s.newValueSelected.connect(lambda: print(s.get_values()) )
     s.show()
     app.exec_()
     print('done')

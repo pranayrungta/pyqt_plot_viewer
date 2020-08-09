@@ -1,14 +1,14 @@
+from PyQt5 import QtWidgets
 import matplotlib
 matplotlib.use('Qt5Agg')
-from PyQt5 import QtWidgets
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
-from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT
+from matplotlib.backends.backend_qt5agg import (
+         FigureCanvasQTAgg, NavigationToolbar2QT)
 from matplotlib.figure import Figure
 
 class Plotter(QtWidgets.QWidget):
     def __init__(self, plot_param):
         super(Plotter, self).__init__()
-        self.fig = Figure()
+        self.fig = Figure(tight_layout=True)
         self.plot_param = plot_param
         self.canvas = FigureCanvasQTAgg(self.fig)
         self.ax = self.fig.add_subplot(111)
@@ -43,20 +43,16 @@ class Plotter(QtWidgets.QWidget):
             self.ax.set_title(p['plot_title'])
         if(p['legend_loc']!='None'):
             self.ax.legend( loc=p['legend_loc'] )
-        self.fig.tight_layout()
 
 
 
 if __name__ == '__main__':
-    from plot_test import test_get_data, plot_param
-    dfs = test_get_data()
-    p = plot_param()
+    from tests import test_get_data, plot_param
+    dfs, title = test_get_data()
 
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    form = Plotter()
-    form.set_data(dfs)
-    # form.set_plot_param(**p)
+    app = QtWidgets.QApplication([])
+    form = Plotter( plot_param )
+    form.set_data(dfs, title)
     form.show()
     app.exec_()
     print('done')
