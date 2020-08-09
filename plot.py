@@ -6,9 +6,10 @@ from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT
 from matplotlib.figure import Figure
 
 class Plotter(QtWidgets.QWidget):
-    def __init__(self, *args, **kwargs):
-        super(Plotter, self).__init__(*args, **kwargs)
+    def __init__(self, plot_param):
+        super(Plotter, self).__init__()
         self.fig = Figure()
+        self.plot_param = plot_param
         self.canvas = FigureCanvasQTAgg(self.fig)
         self.ax = self.fig.add_subplot(111)
         self.toolbar = NavigationToolbar2QT(self.canvas, self)
@@ -17,16 +18,16 @@ class Plotter(QtWidgets.QWidget):
         plot_layout.addWidget(self.toolbar)
         self.setLayout(plot_layout)
 
-    def set_data(self, dfs, plot_param, title):
+    def set_data(self, dfs, title):
         self.ax.clear()
         for label, df in dfs.items():
-            c = df.columns
-            x,y = df[c[0]], df[c[1]]
-            self.ax.plot( x, y, 'o-', label=label)
-        self.set_plot_param(plot_param, title)
+            using = self.plot_param['using']
+            self.ax.plot( *using(df), label=label)
+        self.set_plot_param(title)
         self.canvas.draw()
 
-    def set_plot_param(self, p, title):
+    def set_plot_param(self, title):
+        p = self.plot_param
         self.ax.grid(p['set_grid'])
 
         if('x' in p['log']):self.ax.set_xscale('log')
