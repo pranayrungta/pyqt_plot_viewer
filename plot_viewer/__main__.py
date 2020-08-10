@@ -16,7 +16,7 @@ def main():
         p = config['Parameters']
         plot_param = config['Plot_Paramters']
     except:
-        print('File not recognised')
+        print('File not recognised :', sys.argv[1:])
         exit(1)
     from plot_viewer.controller import interactive_plot
     interactive_plot(p, plot_param)
