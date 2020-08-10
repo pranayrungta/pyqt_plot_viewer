@@ -32,7 +32,7 @@ def test_get_data():
 
 def test_get_nvsx():
     from model import get_nvsx
-    vals = {'c': '1', 'n': '700', 'k': '2', 'b': '0'
+    vals = {'c': '1', 'n': '700', 'k': '2', 'b': '0',
             'wire': 'static', 'p': '0.5'}
     df = get_nvsx(vals, verbose=True)
     return df

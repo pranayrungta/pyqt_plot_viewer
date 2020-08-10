@@ -23,5 +23,5 @@ plot_param = dict(
 
 
 if __name__ == '__main__':
-    from ui import interactive_plot
+    from controller import interactive_plot
     interactive_plot(p, plot_param)
