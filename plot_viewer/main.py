@@ -18,7 +18,7 @@ def main():
     except:
         print('File not recognised')
         exit(1)
-    from controller import interactive_plot
+    from plot_viewer.controller import interactive_plot
     interactive_plot(p, plot_param)
 
 if __name__ == '__main__':

@@ -23,6 +23,6 @@ plot_param = dict(
 
 
 if __name__ == '__main__':
-    from controller import interactive_plot
+    from plot_viewer.controller import interactive_plot
     interactive_plot(p, plot_param)
 

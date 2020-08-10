@@ -22,7 +22,7 @@ plot_param = dict(
 )
 
 def test_get_data():
-    from model import get_data
+    from plot_viewer.model import get_data
     variable = 'b', ['0', '-0.04', '-0.08', '-0.1']
     const_vals = {'c': '1', 'n': '700', 'k': '2',
                   'wire': 'static', 'p': '0.5'}
@@ -31,7 +31,7 @@ def test_get_data():
 
 
 def test_get_nvsx():
-    from model import get_nvsx
+    from plot_viewer.model import get_nvsx
     vals = {'c': '1', 'n': '700', 'k': '2', 'b': '0',
             'wire': 'static', 'p': '0.5'}
     df = get_nvsx(vals, verbose=True)

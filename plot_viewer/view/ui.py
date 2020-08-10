@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets
-from view.controls import Controls
-from view.plot import Plotter
+from plot_viewer.view.controls import Controls
+from plot_viewer.view.plot import Plotter
 
 class UI(QtWidgets.QDialog):
     def __init__(self, p, plot_param): # parameters
