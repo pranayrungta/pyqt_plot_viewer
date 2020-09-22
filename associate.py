@@ -5,7 +5,7 @@ def get_cmd_icon():
     executable = sys.executable
     if executable.endswith('python.exe'):
         executable = executable[:-10] + 'pythonw.exe'
-    launch_cmd = f'"{executable}" -m library_name "%1" %*'
+    launch_cmd = f'"{executable}" -m plot_viewer "%1" %*'
     cwd = pathlib.Path(__file__).parent
     icon_path = str(cwd/'icon.ico')
     return launch_cmd, icon_path
@@ -27,7 +27,7 @@ def associate():
         with winreg.CreateKey(k, r"shell\open\command") as launchk:
             winreg.SetValue(launchk, "", SZ, launch_cmd)
         with winreg.CreateKey(k, r"DefaultIcon") as icon:
-            winreg.SetValue(icon, "", SZ, launch_cmd)
+            winreg.SetValue(icon, "", SZ, icon_path)
 
 def notify_window():
     from win32com.shell import shell, shellcon
