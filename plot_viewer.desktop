@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Plot viewer files
+# This is for opening files, not launching the notebook from a menu
+NoDisplay=true
+Exec={PYTHON} -m plot_viewer %f
+Terminal=false
+MimeType=application/x-plt+json;
+Name[en_IN]=plot_viewer.desktop

@@ -8,6 +8,7 @@ def read_config(filename='plot.cfg'):
             key_val[k] = eval(v)
     return config
 
+import traceback
 def main():
     import sys
     try:
@@ -19,7 +20,10 @@ def main():
         print('File not recognised :', sys.argv[1:])
         exit(1)
     from plot_viewer.controller import interactive_plot
-    interactive_plot(p, plot_param)
+    try: interactive_plot(p, plot_param, filename)
+    except Exception:
+        print(traceback.format_exc())
+
 
 if __name__ == '__main__':
     main()
