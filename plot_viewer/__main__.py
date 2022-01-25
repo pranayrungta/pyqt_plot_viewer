@@ -41,3 +41,4 @@ links = {'plot': plot}
 
 if __name__ == '__main__':
     main(links)
+    pass

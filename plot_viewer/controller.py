@@ -2,22 +2,24 @@ from PyQt5 import QtWidgets
 from plot_viewer.view.ui import UI
 from plot_viewer.model import get_data
 
-class MyApp(UI):
+class MyApp:
     def __init__(self, wd, config): # parameters
-        super(MyApp, self).__init__(config['Parameters'],
-                                config['Plot_Paramters'])
         self.wd = wd
-        self.newValueSelected.connect(self.plot_interactive)
-        self.plot_interactive()
+        self.ui = UI(config['Parameters'],
+                     config['Plot_Paramters'])
+        print('running', flush=True)
+        self.ui.newValueSelected.connect(self.plot_interactive)
+        self.ui.newValueSelected.emit()
+        self.ui.show()
 
     def plot_interactive(self):
-        variable, const = self.controls.get_values()
+        print('called', flush=True)
+        variable, const = self.ui.controls.get_values()
         dfs, title = get_data(variable, const, self.wd)
-        self.plotter.set_data(dfs, title)
+        self.ui.plotter.set_data(dfs, title)
 
 
 def interactive_plot(wd, config):
     app = QtWidgets.QApplication([])
-    ui = MyApp(wd, config)
-    ui.show()
+    myapp = MyApp(wd, config)
     app.exec_()

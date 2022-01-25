@@ -9,8 +9,8 @@ def data(root, filename):
               inplace=True)
 
     para = filename[:-4].split('_')
-    param = {'type':para[0]}
-    param.update(map(lambda val:val.split('='), para[1:]))
+    param = {'wire':para.pop(1)}
+    param.update(map(lambda val:val.split('='), para))
     return df, param
 
 def read_data():
@@ -21,15 +21,15 @@ def read_data():
         for filename in files:
             if '=' in filename:
                 df, param = data(root, filename)
-                df['param_id'] = ind
-                param['param_id'] = ind
+                df['ids'] = ind
+                param['ids'] = ind
                 all_param.append(param)
                 all_data.append(df)
                 ind += 1
     all_param = pd.DataFrame(all_param)
-    all_param.set_index('param_id', inplace=True)
+    all_param.set_index('ids', inplace=True)
     all_data = pd.concat(all_data)
-    all_data.set_index('param_id', inplace=True)
+    all_data.set_index('ids', inplace=True)
     return all_param, all_data
 
 
@@ -37,5 +37,5 @@ def read_data():
 param, sdata = read_data()
 import sqlite3
 con = sqlite3.connect('data.sqlite')
-param.to_sql('param', con)
+param.to_sql('atr', con)
 sdata.to_sql('data',con)
