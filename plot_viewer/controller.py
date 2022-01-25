@@ -12,7 +12,6 @@ class MyApp:
         self.ui.show()
 
     def plot_interactive(self):
-        print('called', flush=True)
         variable, const = self.ui.controls.get_values()
         dfs, title = self.model.get_data(variable, const)
         self.ui.plotter.set_data(dfs, title)

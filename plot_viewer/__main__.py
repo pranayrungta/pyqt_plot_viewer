@@ -28,7 +28,7 @@ def main(links):
     except Exception:
         import traceback
         print(traceback.format_exc())
-        input()
+        input('Press enter to exit !!!')
 
 
 def plot(wd, config):

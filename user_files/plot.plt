@@ -21,7 +21,7 @@ p = ['0', '0.1', '0.3', '0.5', '0.7']
 [Plot_Paramters]
 set_grid = True
 log = 'None'
-xlabel = ('$N_1$', {'fontsize': 18})
+xlabel = ('$N_1$', {'fontsize': 18}) 
 ylabel = ('<x>', {'fontsize': 18})
 xlim = {'xmin': -1.5, 'xmax': 62}
 ylim = {'ymin': -1.15, 'ymax': 1.25}
