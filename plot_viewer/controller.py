@@ -1,12 +1,12 @@
 from PyQt5 import QtWidgets
 from plot_viewer.view.ui import UI
 from plot_viewer.model import get_data
-from pathlib import Path
 
 class MyApp(UI):
-    def __init__(self, p, plot_param, filename): # parameters
-        super(MyApp, self).__init__(p, plot_param)
-        self.wd = Path(filename).resolve().parent
+    def __init__(self, wd, config): # parameters
+        super(MyApp, self).__init__(config['Parameters'],
+                                config['Plot_Paramters'])
+        self.wd = wd
         self.newValueSelected.connect(self.plot_interactive)
         self.plot_interactive()
 
@@ -16,8 +16,8 @@ class MyApp(UI):
         self.plotter.set_data(dfs, title)
 
 
-def interactive_plot(p, plot_param, filename):
+def interactive_plot(wd, config):
     app = QtWidgets.QApplication([])
-    ui = MyApp(p, plot_param, filename)
+    ui = MyApp(wd, config)
     ui.show()
     app.exec_()

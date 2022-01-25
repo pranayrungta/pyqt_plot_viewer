@@ -1,3 +1,6 @@
+[Program]
+action = 'plot'
+
 [Parameters]
 wire = ['static', 'dynamic']
 c = ['1']
