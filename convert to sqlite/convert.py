@@ -9,7 +9,7 @@ def data(root, filename):
               inplace=True)
 
     para = filename[:-4].split('_')
-    param = {'wire':para.pop(1)}
+    param = {'wire':para.pop(0)}
     param.update(map(lambda val:val.split('='), para))
     return df, param
 
@@ -32,10 +32,21 @@ def read_data():
     all_data.set_index('ids', inplace=True)
     return all_param, all_data
 
+def sample_filenames():
+    i=0
+    for root,direc,files in os.walk('./'):
+        for filename in files:
+            if '=' in filename:
+                print(filename)
+                i+=1
+                if i==5:
+                    return root, filename
+    # root, filename = sample_filenames()
 
 
-param, sdata = read_data()
-import sqlite3
-con = sqlite3.connect('data.sqlite')
-param.to_sql('atr', con)
-sdata.to_sql('data',con)
+def main():
+    param, sdata = read_data()
+    import sqlite3
+    con = sqlite3.connect('data.sqlite')
+    param.to_sql('atr', con)
+    sdata.to_sql('data',con)
