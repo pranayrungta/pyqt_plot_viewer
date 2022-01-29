@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Plot viewer files
+NoDisplay=true
+Exec={PYTHON} -m plotter %f
+Terminal=false
+MimeType=application/x-plt+json;
+Name[en_IN]=plotter.desktop

@@ -5,7 +5,7 @@ def get_cmd_icon():
     executable = sys.executable
     if executable.endswith('python.exe'):
         executable = executable[:-10] + 'pythonw.exe'
-    launch_cmd = f'"{executable}" -m plot_viewer "%1" %*'
+    launch_cmd = f'"{executable}" -m plotter "%1" %*'
     cwd = pathlib.Path(__file__).parent
     icon_path = str(cwd/'icon.ico')
     return launch_cmd, icon_path

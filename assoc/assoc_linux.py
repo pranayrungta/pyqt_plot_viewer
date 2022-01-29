@@ -19,9 +19,9 @@ run(['xdg-mime', 'install', str(_PKGDIR / 'application-x-plt+json.xml')],
 
 print('Installing desktop file...')
 apps_dir = os.path.join(os.environ['XDG_DATA_HOME'], "applications/")
-with (_PKGDIR / 'plot_viewer.desktop').open('r', encoding='utf-8') as f:
+with (_PKGDIR / 'plotter.desktop').open('r', encoding='utf-8') as f:
     desktop_contents = f.read().format(PYTHON=sys.executable)
-with Path(apps_dir, 'plot_viewer.desktop').open('w', encoding='utf-8') as f:
+with Path(apps_dir, 'plotter.desktop').open('w', encoding='utf-8') as f:
     f.write(desktop_contents)
 run(['update-desktop-database', apps_dir], check=True)
 

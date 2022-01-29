@@ -35,8 +35,13 @@ def plot(wd, config):
     from plot_viewer.controller import interactive_plot
     interactive_plot(wd, config)
 
+def testing(wd, config):
+    print('hello')
+    input()
+
 # {action : function} map
-links = {'plot': plot}
+links = {'plot': plot,
+         'plot-spt': testing}
 
 
 if __name__ == '__main__':
