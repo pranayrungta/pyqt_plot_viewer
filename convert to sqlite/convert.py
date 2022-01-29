@@ -4,7 +4,8 @@ import pandas as pd
 
 def data(root, filename):
     filepath = os.path.join(root,filename)
-    df = pd.read_csv(filepath, sep='\t', skiprows=2)
+    df = pd.read_csv(filepath, sep='\t', skiprows=2,
+                     skip_blank_lines=True)
     df.rename(columns = {df.columns[0]:df.columns[0].strip('# ')},
               inplace=True)
 
@@ -19,7 +20,7 @@ def read_data():
     for root,direc,files in os.walk('./'):
         print(root)
         for filename in files:
-            if '=' in filename:
+            if '=' in filename and filename.endswith('.txt'):
                 df, param = data(root, filename)
                 df['ids'] = ind
                 param['ids'] = ind
