@@ -25,14 +25,15 @@ def main(links):
     try:
         action = links.get(config['action'], default_action)
         action(wd, config)
-    except Exception:
+    except:
         import traceback
         print(traceback.format_exc())
         input('Press enter to exit !!!')
+        input()
 
 
 def plot(wd, config):
-    from plot_viewer.controller import interactive_plot
+    from plotter.vary.main import interactive_plot
     interactive_plot(wd, config)
 
 def testing(wd, config):

@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets
-from plot_viewer.view.controls import Controls
-from plot_viewer.view.plot import Plotter
+from plotter.vary.view.controls import Controls
+from plotter.vary.view.plot import Plotter
 
 class UI(QtWidgets.QDialog):
     def __init__(self, p, plot_param): # parameters
@@ -29,7 +29,7 @@ class UI(QtWidgets.QDialog):
 
 
 if __name__ == '__main__':
-    from tests import p, plot_param
+    from plotter.tests import p, plot_param
     app = QtWidgets.QApplication([])
     ui = UI(p, plot_param)
     ui.newValueSelected.connect(lambda:

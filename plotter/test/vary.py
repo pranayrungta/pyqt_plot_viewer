@@ -22,7 +22,7 @@ plot_param = dict(
 )
 
 def test_get_data():
-    from plot_viewer.model import get_data
+    from plotter.vary.model import Model
     variable = 'b', ['0', '-0.04', '-0.08', '-0.1']
     const_vals = {'c': '1', 'n': '700', 'k': '2',
                   'wire': 'static', 'p': '0.5'}

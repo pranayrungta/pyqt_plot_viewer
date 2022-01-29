@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets
-from plot_viewer.view.ui import UI
-from plot_viewer.model import Model
+from plotter.vary.view import UI
+from plotter.vary.model import Model
 
 class MyApp:
     def __init__(self, wd, config): # parameters

@@ -1,4 +1,4 @@
 *.ipynb_checkpoints*
 *.pyc
-*plot_viewer.egg-info*
+*.egg-info*
 

@@ -47,7 +47,7 @@ class Plotter(QtWidgets.QWidget):
 
 
 if __name__ == '__main__':
-    from plot_viewer.tests import test_get_data, plot_param
+    from plotter.tests import test_get_data, plot_param
     dfs, title = test_get_data()
 
     app = QtWidgets.QApplication([])
