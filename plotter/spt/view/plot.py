@@ -46,15 +46,11 @@ class Plotter(QtWidgets.QWidget):
 
 if __name__ == '__main__':
     from plotter.spt.model import test_model
-    plot_param = dict(
-        log = 'None', #'None' 'x' 'y' 'xy'
-
-        xlabel = ( r'Nodes', dict(fontsize=18) ),
-        ylabel = ( 'time',  dict(fontsize=18) ), #{'fontsize':20}
-        plot_title = 'auto', # 'auto' 'None' 'TITLE'
-    )
+    plot_param = dict( log = 'None',
+        xlabel = ( 'Nodes',  ),
+        ylabel = ( 'Time',   ),
+        plot_title = 'auto' )
     df, title = test_model()
     form = Plotter( plot_param )
     form.set_data(df, title)
     form.show()
-    print('done')

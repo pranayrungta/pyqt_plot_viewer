@@ -1,7 +1,6 @@
 from PyQt5.QtWidgets import (QWidget, QLabel, QVBoxLayout)
 from PyQt5.QtCore import pyqtSignal
-from plotter.vary.view.controls import (seperate_const,
-                                    const_label, Slider)
+from plotter.utils.ft import seperate_const, const_label, Slider
 
 class Controls(QWidget):
     newValueSelected = pyqtSignal()
@@ -41,7 +40,6 @@ if __name__ == '__main__':
          'b'   : ['-0.035'],
          'p'   : ['0', '0.8'],
          'N1'  : ['1', '30']}
-
     s = Controls(p)
     s.newValueSelected.connect(lambda: print(s.get_values()) )
     s.show()

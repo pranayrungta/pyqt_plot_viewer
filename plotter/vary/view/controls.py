@@ -1,55 +1,8 @@
-from PyQt5.QtWidgets import (QWidget, QLabel, QSlider, QComboBox,
-                             QHBoxLayout, QVBoxLayout, QApplication)
-from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtWidgets import (QWidget, QLabel, QComboBox,
+                             QHBoxLayout, QVBoxLayout)
+from PyQt5.QtCore import pyqtSignal
+from plotter.utils.ft import seperate_const, const_label, Slider
 
-class Slider(QWidget):
-    def __init__(self, label="p:", vals=['a','b','c'], *args, **kwargs):
-        super(Slider, self).__init__(*args, **kwargs)
-
-        self.vals=vals
-        self.label = QLabel(label)
-        slider = QSlider(Qt.Horizontal)
-        slider.setSingleStep(1)
-        slider.setRange(0, len(vals)-1)
-        slider.valueChanged.connect(lambda i:
-                self.current_value.setText(self.vals[i]))
-        self.slider = slider
-        self.current_value = QLabel(vals[0])
-
-        hbox = QHBoxLayout()
-        hbox.addWidget(self.label)
-        hbox.addWidget(self.slider)
-        hbox.addWidget(self.current_value)
-        self.setLayout(hbox)
-
-    def hide(self):
-        self.label.hide()
-        self.slider.hide()
-        self.current_value.hide()
-
-    def show(self):
-        self.label.show()
-        self.slider.show()
-        self.current_value.show()
-
-    def value(self):
-        return self.vals[ self.slider.value() ]
-
-
-def seperate_const(p):
-    var, const = {}, {}
-    for k,v in p.items():
-        if len(v)==1:
-            const[k] = v[0]
-        elif len(v)>1: var[k]=v
-    return const, var
-
-def const_label(const={'c': '1', 'n': '100'}):
-    const_label = ["Constants:"]
-    const_label.extend( f'{k} = {v}'
-                        for k,v in const.items())
-    const_label = '\n\t'.join(const_label)
-    return const_label
 
 class Controls(QWidget):
     newValueSelected = pyqtSignal()
@@ -112,9 +65,6 @@ if __name__ == '__main__':
          'k'   : ['2', '4'],
          'b'   : ['0', '-0.04', '-0.08', '-0.1'],
          'p'   : ['0', '0.1', '0.3', '0.5', '0.7'] }
-    app = QApplication([])
     s = Controls(p)
     s.newValueSelected.connect(lambda: print(s.get_values()) )
     s.show()
-    app.exec_()
-    print('done')
