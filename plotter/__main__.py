@@ -36,13 +36,13 @@ def plot(wd, config):
     from plotter.vary.main import interactive_plot
     interactive_plot(wd, config)
 
-def testing(wd, config):
-    print('hello')
-    input()
+def plot_spt(wd, config):
+    from plotter.spt.main import interactive_plot
+    interactive_plot(wd, config)
 
 # {action : function} map
 links = {'plot': plot,
-         'plot-spt': testing}
+         'plot-spt': plot_spt}
 
 
 if __name__ == '__main__':
