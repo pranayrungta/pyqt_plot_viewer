@@ -1,29 +1,13 @@
-import pandas as pd
-import sqlite3
+from plotter.utils.bk import BaseModel
 
-
-class Model:
+class Model(BaseModel):
     def __init__(self, wd, data_source):
-        self.db = data_source.get('db', 'data.sqlite')
-        self.db = f'{wd}/{self.db}'
-        default_query = '''SELECT time, node, value
-                           from spt_atr inner join spt_dat
-                                on spt_atr.ids=spt_dat.ids'''
-        self.query = data_source.get('query', default_query)
-        self.check_db_validity()
+        super(Model, self).__init__(wd, data_source)
 
-    def check_db_validity(self):
-        import os
-        if not os.path.isfile(self.db):
-            raise ValueError('Database does not exist')
-
-    def get_data(self, vals, verbose=False):
+    def get_data(self, vals):
         where = ' AND '.join(f"{k}='{v}'" for k,v in vals.items())
         query = f'{self.query} \n where {where}'
-        if verbose:print(query)
-        conn = sqlite3.connect(self.db)
-        df = pd.read_sql(query, conn)
-        conn.close()
+        df = self.read_sql(query)
         title = '  '.join(f'{k}={v}' for k,v in vals.items())
         c1, c2, v = df.columns
         df = df.pivot(c1,c2,v)
@@ -34,8 +18,10 @@ def test_model():
     from pathlib import Path
     wd = Path(plotter.__file__).parent.parent
     wd = wd/'user_files'
-    data_source = {}
-    m = Model(wd, data_source)
+    d = {'query': '''SELECT node, time, value
+                from spt_dat inner join spt_atr
+                     on spt_atr.ids=spt_dat.ids'''}
+    m = Model(wd, d)
     vals = {'c': '1', 'k': '2', 'n': '100',
      'b': '-0.035', 'wire': 'static',
      'p': '0.8', 'N1': '1'}
@@ -43,4 +29,4 @@ def test_model():
     return df, title
 
 if __name__=='__main__':
-    test_model()
+    df, title = test_model()

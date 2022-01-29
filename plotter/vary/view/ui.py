@@ -9,7 +9,7 @@ class UI(BaseUI):
         super(UI, self).__init__(controls, plotter)
 
 if __name__ == '__main__':
-    from plotter.tests import p, plot_param
+    from plotter.test.vary import p, plot_param
     ui = UI(p, plot_param)
     ui.newValueSelected.connect(lambda:
             print(ui.controls.get_values()) )
