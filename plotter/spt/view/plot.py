@@ -23,11 +23,14 @@ class Plotter(QtWidgets.QWidget):
         self.ax = self.fig.add_subplot(111)
         if len(df)==0:
             self.ax.text(0.5, 0.5, 'No Data',
-                         fontdict={'fontSize':18, 'ha':'center'})
+                         fontdict={'fontsize':28,
+                                   'ha':'center'})
         else:
-            im = self.ax.imshow(df.values, aspect='auto', origin='lower',
-                interpolation='none', extent=(df.columns.min(),df.columns.max(),
-                                              df.index.min(),df.index.max()) )
+            xmax, xmin = df.columns.min(), df.columns.max()
+            ymax, ymin = df.index.min(), df.index.max()
+            im = self.ax.imshow(df.values, aspect='auto',
+                    origin='lower', interpolation='none',
+                    extent=(xmax, xmin, ymax, ymin) )
             self.fig.colorbar(im)
             self.set_plot_param(title)
         self.canvas.draw()

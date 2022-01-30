@@ -5,8 +5,8 @@ action = 'plot'
 [Data_Source]
 db = 'data.sqlite'
 query = '''SELECT N1, X
-    from nvsx inner join atr
-         on atr.ids=nvsx.ids'''
+    from nvsx_dat inner join nvsx_atr
+         on nvsx_atr.ids=nvsx_dat.ids'''
 
 
 [Parameters]

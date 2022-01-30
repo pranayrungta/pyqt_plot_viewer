@@ -29,8 +29,6 @@ def main(links):
         import traceback
         print(traceback.format_exc())
         input('Press enter to exit !!!')
-        input()
-
 
 def plot(wd, config):
     from plotter.vary.main import interactive_plot
