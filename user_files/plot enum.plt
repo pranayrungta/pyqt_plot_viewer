@@ -8,9 +8,21 @@ query = 'SELECT N1, X from nvsx where id={id}'
 
 
 [Parameters]
-wire = [{'id':1},
-    {'id':2},
-    {'id':3},
+values = [
+ ('plot title',
+          {'title1': {'id':1},
+           'title2': {'id':1},
+           'title3': {'id':1}, }),
+
+ ('plot title',
+          {'title1': {'id':1},
+           'title2': {'id':1},
+           'title3': {'id':1}, }),
+
+ ('plot title',
+          {'title1': {'id':1},
+           'title2': {'id':1},
+           'title3': {'id':1}, }),
    ]
 
 

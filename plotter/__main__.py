@@ -29,6 +29,7 @@ def main(links):
         import traceback
         print(traceback.format_exc())
         input('Press enter to exit !!!')
+        input()
 
 def plot(wd, config):
     from plotter.vary.main import interactive_plot
@@ -38,9 +39,14 @@ def plot_spt(wd, config):
     from plotter.spt.main import interactive_plot
     interactive_plot(wd, config)
 
+def plot_enum(wd, config):
+    from plotter.spt.main import interactive_plot
+    interactive_plot(wd, config)
+
 # {action : function} map
 links = {'plot': plot,
-         'plot-spt': plot_spt}
+         'plot-spt': plot_spt,
+         'plot-enum': plot_enum }
 
 
 if __name__ == '__main__':

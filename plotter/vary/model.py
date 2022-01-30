@@ -26,8 +26,8 @@ def test_model():
     wd = Path(plotter.__file__).parent.parent
     wd = wd/'user_files'
     d = {'query': '''SELECT N1, X
-                from nvsx inner join atr
-                     on atr.ids=nvsx.ids'''}
+                from nvsx_dat inner join nvsx_atr
+                     on nvsx_atr.ids=nvsx_dat.ids'''}
     m = Model(wd, d)
     v = ('b', ['0', '-0.04', '-0.08', '-0.1'])
     c = {'c': '1', 'n': '100', 'wire': 'static', 'k': '2', 'p': '0'}
