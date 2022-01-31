@@ -40,7 +40,7 @@ def plot_spt(wd, config):
     interactive_plot(wd, config)
 
 def plot_enum(wd, config):
-    from plotter.spt.main import interactive_plot
+    from plotter.enum.main import interactive_plot
     interactive_plot(wd, config)
 
 # {action : function} map
