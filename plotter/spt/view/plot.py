@@ -26,11 +26,16 @@ class Plotter(QtWidgets.QWidget):
                          fontdict={'fontsize':28,
                                    'ha':'center'})
         else:
+            p = self.plot_param
+            kwargs = dict()
+            if p['color_z_range']:
+                zmin, zmax = p['color_z_range']
+                kwargs = {'vmin' : zmin, 'vmax' : zmax }
             xmax, xmin = df.columns.min(), df.columns.max()
             ymax, ymin = df.index.min(), df.index.max()
             im = self.ax.imshow(df.values, aspect='auto',
                     origin='lower', interpolation='none',
-                    extent=(xmax, xmin, ymax, ymin) )
+                    extent=(xmax, xmin, ymax, ymin), **kwargs)
             self.fig.colorbar(im)
             self.set_plot_param(title)
         self.canvas.draw()

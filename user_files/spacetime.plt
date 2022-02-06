@@ -24,3 +24,4 @@ log = 'None'
 xlabel = ('$time$', {'fontsize': 18})
 ylabel = ('$N_i$', {'fontsize': 18})
 plot_title = 'auto'
+color_z_range = (-1.1, 1.3) # None
