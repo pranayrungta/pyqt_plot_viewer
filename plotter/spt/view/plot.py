@@ -22,9 +22,10 @@ class Plotter(QtWidgets.QWidget):
         self.fig.clear()
         self.ax = self.fig.add_subplot(111)
         if len(df)==0:
-            self.ax.text(0.5, 0.5, 'No Data',
-                         fontdict={'fontsize':28,
-                                   'ha':'center'})
+            f = dict(fontsize=28, ha='center')
+            self.ax.text(0.5, 0.5, 'No Data', fontdict=f)
+            self.ax.set_xticks([])
+            self.ax.set_yticks([])
         else:
             p = self.plot_param
             kwargs = dict()

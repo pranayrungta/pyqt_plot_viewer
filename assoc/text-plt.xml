@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
-    <mime-type type="application/x-plt+json">
+    <mime-type type="text/plt">
         <comment>Plot viewer file</comment>
         <glob pattern="*.plt"/>
     </mime-type>
